@@ -56,10 +56,14 @@ public class ElevationImage {
         double elevationAboveMin = (maxElevation - minElevation) * (actual / 255);
         double irlElevation = elevationAboveMin + minElevation;
 
-
-        // do epic calculation to get MC elevation from irl elevation
-        // whatever sqrt thing
+        int mcElevation = getMCElevation(irlElevation);
 
         return actual;
     }
+
+    private static int getMCElevation(double irlElevation) {
+        float underSqrt = 552.70976F - (.8754F * (612.51526F - (float) irlElevation));
+        return (int) ((23.50978D + underSqrt) / .4377D);
+    }
+
 }
