@@ -1,1 +1,14 @@
 imageName: pensacola.png
+images:
+  image1:
+    imageFile: johnsoncity.png
+    minElevation: 411.694
+    maxElevation: 629.76
+    minX: 369993
+    minZ: 4030005
+  image2:
+    imageFile: northOfJC.png
+    minElevation: 383.744
+    maxElevation: 559.364
+    minx: 369993
+    minZ: 4040005
