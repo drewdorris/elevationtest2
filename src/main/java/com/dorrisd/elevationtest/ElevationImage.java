@@ -33,6 +33,18 @@ public class ElevationImage {
         return this.maxElevation;
     }
 
+    public int getMinX() { return this.minX; }
+
+    public int getMinZ() { return this.minZ; }
+
+    public boolean withinBounds(int x, int z) {
+        x += 6;
+        z += 6;
+        if (x < minX + 6 || z < minZ + 6) return false;
+        if (x + 6 > minX + 10000 || z + 6 > minZ + 10000) return false;
+        return true;
+    }
+
     public int getElevation(int x, int z) {
         x += 6;
         z += 6;
@@ -63,7 +75,8 @@ public class ElevationImage {
 
     private static int getMCElevation(double irlElevation) {
         float underSqrt = 552.70976F - (.8754F * (612.51526F - (float) irlElevation));
-        return (int) ((23.50978D + underSqrt) / .4377D);
+        int elevation = (int) ((23.50978D + underSqrt) / .4377D);
+        return elevation;
     }
 
 }

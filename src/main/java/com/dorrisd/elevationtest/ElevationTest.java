@@ -50,14 +50,21 @@ public class ElevationTest extends JavaPlugin implements Listener {
         return null;
     }
 
-    public Set<ElevationImage> getImages(int x, int z) {
+    public synchronized Set<ElevationImage> getImages(int x, int z) {
         Set<ElevationImage> elevationImages = new HashSet<>();
+        for (ElevationImage image : this.images) {
+            if (image.withinBounds(x, z)) elevationImages.add(image);
+        }
+        if (elevationImages.size() > 0) return elevationImages;
+
         ConfigurationSection imageSection = getConfig().getConfigurationSection("images");
         if (imageSection == null) return null;
 
         for (String imagePart : imageSection.getKeys(false)) {
             int minX = getConfig().getInt("images." + imagePart + ".minX");
             int minZ = getConfig().getInt("images." + imagePart + ".minZ");
+
+            x += 6; z += 6;
 
             if (x < minX + 6 || z < minZ + 6) continue;
             if (x + 6 > minX + 10000 || z + 6 > minZ + 10000) continue;
