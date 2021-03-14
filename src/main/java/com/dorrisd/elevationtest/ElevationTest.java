@@ -29,6 +29,7 @@ public class ElevationTest extends JavaPlugin implements Listener {
         this.images = new HashSet<>();
 
         saveDefaultConfig();
+        RGBBlockColor.activateBlocks();
     }
 
     public void onDisable() {
@@ -55,7 +56,9 @@ public class ElevationTest extends JavaPlugin implements Listener {
         for (ElevationImage image : this.images) {
             if (image.withinBounds(x, z)) elevationImages.add(image);
         }
-        if (elevationImages.size() > 0) return elevationImages;
+        if (elevationImages.size() > 0) {
+            return elevationImages;
+        }
 
         ConfigurationSection imageSection = getConfig().getConfigurationSection("images");
         if (imageSection == null) return null;
@@ -102,10 +105,13 @@ public class ElevationTest extends JavaPlugin implements Listener {
             String imageFile = getConfig().getString("images." + imagePart + ".imageFile");
             BufferedImage buff = imageFromFile(imageFile);
             if (buff == null) continue;
+            String satImage = imageFile.replace(".png", "_sat.png");
+            BufferedImage buffSat = imageFromFile(satImage);
+            if (buff == null) continue;
             int minElevation = getConfig().getInt("images." + imagePart + ".minElevation");
             int maxElevation = getConfig().getInt("images." + imagePart + ".maxElevation");
 
-            ElevationImage image = new ElevationImage(imageFile, buff, minX, minZ, minElevation, maxElevation);
+            ElevationImage image = new ElevationImage(imageFile, buff, buffSat, minX, minZ, minElevation, maxElevation);
             this.images.add(image);
             return image;
         }
